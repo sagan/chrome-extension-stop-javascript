@@ -33,7 +33,7 @@ function exit( status ) {
         'copy', 'cut', 'paste',
         'beforeunload', 'blur', 'change', 'click', 'contextmenu', 'dblclick', 'focus', 'keydown', 'keypress', 'keyup', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'selectstart',
         'DOMNodeInserted', 'DOMNodeRemoved', 'DOMNodeRemovedFromDocument', 'DOMNodeInsertedIntoDocument', 'DOMAttrModified', 'DOMCharacterDataModified', 'DOMElementNameChanged', 'DOMAttributeNameChanged', 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'online', 'offline', 'textInput',
-        'abort', 'close', 'dragdrop', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
+        'abort', 'close', 'dragstart', 'dragend', 'dragenter', 'dragexit', 'dragleave', 'dragover', 'drop', 'drag', 'dragdrop', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
     ];
 
     function stopPropagation (e) {
