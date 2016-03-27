@@ -2,7 +2,7 @@
 
 本 Chrome extension 在 Chrome 工具栏添加一个按钮, 点击这个按钮后会停止当前 tab 页所有 Javascript 脚本的执行.
 
-这个 extension 的初衷是用来对付某些顽固的禁止复制页面内容的网站.
+这个 extension 的初衷是用来对付某些顽固的禁止复制内容的网站, 试过其它几个专门用来「解除禁止复制限制」的 Chrome extension 都无效.
 
 ## 原理
 
