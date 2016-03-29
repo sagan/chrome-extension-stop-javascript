@@ -37,6 +37,12 @@ function exit( status ) {
     if (window.stop) {
         window.stop();
     }
+    
+    Array.prototype.forEach.call(document.querySelectorAll("*"), el => {
+        if( document.defaultView.getComputedStyle(el)["-webkit-user-select"] == "none" ) {
+            el.style.webkitUserSelect = "text";
+        }
+    });
 
     throw '';
 }
