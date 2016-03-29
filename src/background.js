@@ -40,7 +40,8 @@ function exit( status ) {
     
     Array.prototype.forEach.call(document.querySelectorAll("*"), el => {
         if( document.defaultView.getComputedStyle(el)["-webkit-user-select"] == "none" ) {
-            el.style.webkitUserSelect = "text";
+            //el.style.webkitUserSelect = "text";
+            el.style.setProperty("-webkit-user-select", "text", "important");
         }
     });
 
