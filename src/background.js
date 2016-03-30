@@ -1,47 +1,31 @@
 ﻿
-
-function exit( status ) {
-    // http://kevin.vanzonneveld.net
-    // +   original by: Brett Zamir (http://brettz9.blogspot.com)
-    // +      input by: Paul
-    // +   bugfixed by: Hyam Singer (http://www.impact-computing.com/)
-    // +   improved by: Philip Peterson
-    // +   bugfixed by: Brett Zamir (http://brettz9.blogspot.com)
-    // %        note 1: Should be considered expirimental. Please comment on this function.
-    // *     example 1: exit();
-    // *     returns 1: null
-
-    var i;
-
-    if (typeof status === 'string') {
-        alert(status);
-    }
-
+function exit() {
+    'use strict';
     window.addEventListener('error', function (e) {e.preventDefault();e.stopPropagation();}, false);
 
-    var handlers = [
+    let handlers = [
         'copy', 'cut', 'paste',
         'beforeunload', 'blur', 'change', 'click', 'contextmenu', 'dblclick', 'focus', 'keydown', 'keypress', 'keyup', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'selectstart',
-        'DOMNodeInserted', 'DOMNodeRemoved', 'DOMNodeRemovedFromDocument', 'DOMNodeInsertedIntoDocument', 'DOMAttrModified', 'DOMCharacterDataModified', 'DOMElementNameChanged', 'DOMAttributeNameChanged', 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'online', 'offline', 'textInput',
-        'abort', 'close', 'dragdrop', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
+        'DOMNodeInserted', 'DOMNodeRemoved', 'DOMNodeRemovedFromDocument', 'DOMNodeInsertedIntoDocument', 'DOMAttrModified', 'DOMCharacterDataModified', 'DOMElementNameChanged', 'DOMAttributeNameChanged', 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'online', 'offline', 'input',
+        'abort', 'close', 'drop', 'dragstart', 'drag', 'load', 'paint', 'reset', 'select', 'submit', 'unload'
     ];
 
-    function stopPropagation (e) {
+    function eventHandler(e) {
         e.stopPropagation();
         // e.preventDefault(); // Stop for the form controls, etc., too?
     }
-    for (i=0; i < handlers.length; i++) {
-        window.addEventListener(handlers[i], function (e) {stopPropagation(e);}, true);
+    for(let i=0; i < handlers.length; i++) {
+        window.addEventListener(handlers[i], eventHandler, true);
     }
 
-    if (window.stop) {
+    if(window.stop) {
         window.stop();
     }
     
     Array.prototype.forEach.call(document.querySelectorAll("*"), el => {
         if( document.defaultView.getComputedStyle(el)["-webkit-user-select"] == "none" ) {
-            //el.style.webkitUserSelect = "text";
-            el.style.setProperty("-webkit-user-select", "text", "important");
+            //el.style.webkitUserSelect = "auto";
+            el.style.setProperty("-webkit-user-select", "auto", "important");
         }
     });
 
@@ -49,5 +33,5 @@ function exit( status ) {
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) { 
-    chrome.tabs.executeScript(null,{code: exit.toString() + "\nexit();"});
+    chrome.tabs.executeScript(null,{code: exit.toString() + "\nexit();", allFrames: true});
 });
