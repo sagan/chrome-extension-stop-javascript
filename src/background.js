@@ -23,9 +23,17 @@ function exit() {
     }
     
     Array.prototype.forEach.call(document.querySelectorAll("*"), el => {
-        if( document.defaultView.getComputedStyle(el)["-webkit-user-select"] == "none" ) {
+        let cs = document.defaultView.getComputedStyle(el);
+        if( cs["-webkit-user-select"] == "none" ) {
             //el.style.webkitUserSelect = "auto";
             el.style.setProperty("-webkit-user-select", "auto", "important");
+        }
+        // 某些傻逼脑残图片网站在图片上加一层透明div来阻止用户右键保存图片
+        if( (el.tagName == "DIV" || el.tagName == "SPAN")
+            && cs.position == "absolute"
+            && (el.children.length == 0 || el.textContent.trim() == "")
+            ) {
+            el.style.setProperty("display", "none", "important");
         }
     });
 
