@@ -33,7 +33,11 @@ function exit() {
             && cs.position == "absolute"
             && (el.children.length == 0 || el.textContent.trim() == "")
             ) {
-            el.style.setProperty("display", "none", "important");
+            return el.style.setProperty("display", "none", "important");
+        }
+        // 某些更傻逼的歌词网站在文字上覆盖一个拉大的gif透明像素图片来阻止复制文字
+        if( el.tagName == 'IMG' && (el.naturalHeight < 10 && el.naturalWidth < 10) ) {
+            return el.style.setProperty("display", "none", "important");
         }
     });
 
