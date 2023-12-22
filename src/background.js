@@ -2,7 +2,7 @@ function exit() {
   "use strict";
   window.addEventListener(
     "error",
-    function(e) {
+    function (e) {
       e.preventDefault();
       e.stopPropagation();
     },
@@ -55,7 +55,7 @@ function exit() {
     "reset",
     "select",
     "submit",
-    "unload"
+    "unload",
   ];
 
   function eventHandler(e) {
@@ -70,10 +70,13 @@ function exit() {
     window.stop();
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll("*"), el => {
+  Array.from(document.querySelectorAll("*")).forEach((el) => {
     let cs = getComputedStyle(el);
     if (cs["user-select"] == "none") {
       el.style.setProperty("user-select", "auto", "important");
+    }
+    if (el.tagName == "IMG" && !el.draggable) {
+      el.setAttribute("draggable", "true");
     }
     // 某些傻逼脑残图片网站在图片上加一层透明div来阻止用户右键保存图片
     if (
@@ -84,36 +87,44 @@ function exit() {
       el.style.setProperty("display", "none", "important");
     }
     // 某些更傻逼的歌词网站在文字上覆盖一个拉大的gif透明像素图片来阻止复制文字
-    if (
-      el.tagName == "IMG" &&
-      (el.naturalHeight < 10 && el.naturalWidth < 10)
-    ) {
+    if (el.tagName == "IMG" && el.naturalHeight < 10 && el.naturalWidth < 10) {
       el.style.setProperty("display", "none", "important");
     }
 
     // 某些更更傻逼的网站在图片上用css :before 搞个浮层遮住以阻止右键保存
-    cs = getComputedStyle(el, ':before');
-    if( cs.position == 'absolute' && cs.content.match(/^"\s*"$/) ) {
-      el.setAttribute('__fuckyou__before', 1);
+    cs = getComputedStyle(el, ":before");
+    if (cs.position == "absolute" && cs.content.match(/^"\s*"$/)) {
+      el.setAttribute("__fuckyou__before", 1);
     }
-    cs = getComputedStyle(el, ':after');
-    if( cs.position == 'absolute' && cs.content.match(/^"\s*"$/) ) {
-      el.setAttribute('__fuckyou__after', 1);
+    cs = getComputedStyle(el, ":after");
+    if (cs.position == "absolute" && cs.content.match(/^"\s*"$/)) {
+      el.setAttribute("__fuckyou__after", 1);
     }
   });
 
-  let styleEl = document.createElement("style"),styleSheet;
+  let styleEl = document.createElement("style"),
+    styleSheet;
   document.head.appendChild(styleEl);
   styleSheet = styleEl.sheet;
-  styleSheet.insertRule('*[__fuckyou__before]:before { display: none !important; }', 0);
-  styleSheet.insertRule('*[__fuckyou__after]:after { display: none !important; }', 0);
+  styleSheet.insertRule(
+    "*[__fuckyou__before]:before { display: none !important; }",
+    0
+  );
+  styleSheet.insertRule(
+    "*[__fuckyou__after]:after { display: none !important; }",
+    0
+  );
 
   throw "";
 }
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.executeScript(null, {
-    code: exit.toString() + "\nexit();",
-    allFrames: true
+chrome.action.onClicked.addListener(async function () {
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab) {
+    return;
+  }
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id, allFrames: true },
+    func: exit,
   });
 });
