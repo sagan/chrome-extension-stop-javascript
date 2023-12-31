@@ -1,11 +1,10 @@
 {
   "name": "Stop JavaScript",
   "description": "Stop JavaScript execution in current tab.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Jacques De SAGAN",
   "manifest_version": 3,
-  "permissions": ["scripting"],
-  "optional_host_permissions": ["*://*/*"],
+  "permissions": ["scripting", "activeTab"],
   "icons": {
     "16": "icons/cross_16x16.png",
     "48": "icons/cross_48x48.png",
